@@ -54,33 +54,26 @@ class Cas:
         return f'{self.ura}:{self.minuta:02}'
 
 
-if __name__ = '__main__':
-
-zajtrk = Cas(6, 50)
-kosilo = Cas(12, 30)
-vecerja = Cas(18, 40)
-print(zajtrk.ura)
-print(kosilo.minuta)
-
-#print(zajtrk)
-
-spat = Cas(22, 5)
-spat.izpisi()
-zajtrk.izpisi()
-
-print(zajtrk)
-print(spat)
-
-sprehod = kosilo.plus(120)
-print(sprehod)
-print(kosilo)
-print(spat.plus(120))
-print()
-
-print(kosilo.razlika(zajtrk))
-
-
-if zajtrk.je_manjsi_od(kosilo):
-    print('Zajtrk je pred kosilom')
-else:
-    print('Kosilo je pred zajtrkom')
+if __name__ == '__main__':
+    zajtrk = Cas(6, 50)
+    kosilo = Cas(12, 30)
+    vecerja = Cas(18, 40)
+    print(zajtrk.ura)
+    print(kosilo.minuta)
+    
+    #print(zajtrk)
+    spat = Cas(22, 5)
+    spat.izpisi()
+    zajtrk.izpisi()
+    print(zajtrk)
+    print(spat)
+    sprehod = kosilo.plus(120)
+    print(sprehod)
+    print(kosilo)
+    print(spat.plus(120))
+    print()
+    print(kosilo.razlika(zajtrk))
+    if zajtrk.je_manjsi_od(kosilo):
+        print('Zajtrk je pred kosilom')
+    else:
+        print('Kosilo je pred zajtrkom')
