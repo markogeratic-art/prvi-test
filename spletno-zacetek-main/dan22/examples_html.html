@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<title>Primeri</title>
+
+<link rel="stylesheet" href="prism.css">
+<style>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 1rem;
+    margin: 0;
+}
+
+h1 {
+    margin-bottom: 0.5rem;
+}
+
+.controls {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+label {
+    margin-right: 0.5rem;
+}
+
+select {
+    padding: 0.3rem;
+}
+
+button {
+    padding: 0.3rem 1rem;
+    cursor: pointer;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.container {
+    display: flex;
+    gap: 1rem;
+    height: calc(100vh - 100px);
+}
+
+.panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.panel-header {
+    background: #f5f5f5;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+}
+
+.panel-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+pre {
+    margin: 0;
+    padding: 1rem;
+    font-size: 14px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    flex: 1;
+    display: flex;
+    overflow: auto;
+    background: #1e1e1e;
+    color: #ffffff;
+}
+
+code[contenteditable="true"] {
+    outline: none;
+    flex: 1;
+    display: block;
+    min-height: 100%;
+}
+
+iframe {
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Primeri HTML elementov</h1>
+
+<div class="controls">
+    <label for="example-select">Izberi primer:</label>
+    <select id="example-select"></select>
+    <button id="prev-btn">← Prejšnji</button>
+    <button id="next-btn">Naslednji →</button>
+</div>
+
+<div class="container">
+    <div class="panel">
+        <div class="panel-header">Koda (urejaj)</div>
+        <div class="panel-content">
+            <pre>
+<code id="code-element" class="language-html" contenteditable="true"></code>
+            </pre>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">Izhod</div>
+        <div class="panel-content">
+            <iframe id="output-frame"></iframe>
+        </div>
+    </div>
+</div>
+
+<script src="prism.js"></script>
+
+<script>
+const exampleSelect = document.getElementById('example-select');
+const codeElement = document.getElementById('code-element');
+const outputFrame = document.getElementById('output-frame');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+
+let currentCode = "";
+let currentFile = "";
+let blobUrl = null;
+
+// Load example list
+async function loadExamples() {
+    const response = await fetch('examples_html/examples.json');
+    const examples = await response.json();
+    
+    examples.forEach(example => {
+        const option = document.createElement('option');
+        option.value = example.file;
+        option.textContent = example.name;
+        exampleSelect.appendChild(option);
+    });
+
+    if (examples.length > 0) {
+        exampleSelect.value = examples[0].file;
+        updateExample();
+    }
+    
+    updateButtonStates();
+}
+
+// Load selected example
+async function updateExample() {
+    const file = exampleSelect.value;
+    if (!file) return;
+
+    currentFile = file;
+
+    const response = await fetch('examples/' + file);
+    let code = await response.text();
+
+    // Remove live-server injected code
+    code = code.replace(/<!-- Code injected by live-server -->[\s\S]*?<\/script>/gi, '');
+
+    currentCode = code;
+
+    codeElement.textContent = code;
+    Prism.highlightElement(codeElement);
+
+    updateOutput();
+    updateButtonStates();
+}
+
+// Update iframe with proper base URL
+function updateOutput() {
+    // Revoke previous blob URL to prevent memory leaks
+    if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+    }
+
+    // Inject <base> tag to fix relative paths
+    const baseUrl = new URL('examples/', window.location.href).href;
+    const htmlWithBase = currentCode.replace(
+        /<head>/i,
+        `<head>\n<base href="${baseUrl}">`
+    );
+
+    // Create blob URL and set as iframe src
+    const blob = new Blob([htmlWithBase], { type: 'text/html' });
+    blobUrl = URL.createObjectURL(blob);
+    outputFrame.src = blobUrl;
+}
+
+// Update button states
+function updateButtonStates() {
+    const currentIndex = exampleSelect.selectedIndex;
+    const totalExamples = exampleSelect.options.length;
+    
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === totalExamples - 1;
+}
+
+// Navigate to previous example
+function navigatePrev() {
+    if (exampleSelect.selectedIndex > 0) {
+        exampleSelect.selectedIndex--;
+        updateExample();
+    }
+}
+
+// Navigate to next example
+function navigateNext() {
+    if (exampleSelect.selectedIndex < exampleSelect.options.length - 1) {
+        exampleSelect.selectedIndex++;
+        updateExample();
+    }
+}
+
+// Live update when editing
+codeElement.addEventListener('input', () => {
+    currentCode = codeElement.textContent;
+    updateOutput();
+});
+
+// Change example
+exampleSelect.addEventListener('change', updateExample);
+
+// Button click handlers
+prevBtn.addEventListener('click', navigatePrev);
+nextBtn.addEventListener('click', navigateNext);
+
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+    }
+});
+
+// Initialize
+loadExamples();
+</script>
+
+</body>
+</html>

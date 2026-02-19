@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang=sl>
+<head>
+<meta charset=utf-8>
+<title>CSS Kombinatorji in Separatorji</title>
+<style>
+  /* Descendant combinator (space) - vse <span> znotraj .container */
+  .container span {
+    color: blue;
+  }
+  
+  /* Child combinator (>) - samo neposredni otroci */
+  .parent > p {
+    background-color: lightblue;
+  }
+  
+  /* Next-sibling combinator (+) - samo naslednji sosednji element */
+  h2 + p {
+    font-weight: bold;
+    color: red;
+  }
+  
+  /* Subsequent sibling combinator (~) - vsi naslednji soседnji elementi */
+  h3 ~ p {
+    font-style: italic;
+  }
+  
+  /* Namespace separator (|) - za XML/SVG namespace */
+  svg|circle {
+    fill: green;
+  }
+  
+  /* Selector list (,) - več selektorjev z isto stiliziracijo */
+  h1, h2, h3 {
+    font-family: Arial, sans-serif;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>Demonstracija CSS Kombinatorjev</h1>
+
+<!-- Descendant combinator example -->
+<div class="container">
+  <p>Odstavek z <span>modrim besedilom</span> (descendant)</p>
+  <div>
+    <span>Tudi ta span je moder</span> (globlje gnezdenje)
+  </div>
+</div>
+
+<hr>
+
+<!-- Child combinator example -->
+<div class="parent">
+  <p>Ta odstavek je svetlo moder (neposredni otrok)</p>
+  <div>
+    <p>Ta odstavek NI svetlo moder (ni neposredni otrok)</p>
+  </div>
+</div>
+
+<hr>
+
+<!-- Next-sibling combinator example -->
+<h2>Naslov 2</h2>
+<p>Ta odstavek je krepek in rdeč (takoj za h2)</p>
+<p>Ta odstavek je normalen (ni takoj za h2)</p>
+
+<hr>
+
+<!-- Subsequent sibling combinator example -->
+<h3>Naslov 3</h3>
+<p>Ta odstavek je ležeč (za h3)</p>
+<div>Vmesni element</div>
+<p>Ta odstavek je tudi ležeč (še vedno za h3)</p>
+
+<hr>
+
+<!-- Namespace separator example -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+  <circle cx="50" cy="50" r="40" />
+</svg>
+
+<hr>
+
+<!-- Selector list example -->
+<p>Vsi naslovi (h1, h2, h3) uporabljajo Arial</p>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+input, button {
+    margin: 5px;
+}
+#counter {
+    font-size: 24px;
+    margin: 10px 0;
+}
+#colorDiv {
+    margin: 10px 0;
+}
+#timer {
+    font-size: 24px;
+    margin: 10px 0;
+}
