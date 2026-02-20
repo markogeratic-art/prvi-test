@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+input, button {
+    margin: 5px;
+}
+#counter {
+    font-size: 24px;
+    margin: 10px 0;
+}
+#colorDiv {
+    margin: 10px 0;
+}
+#timer {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+/* Dodatni stil za meterje */
+.meters {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+    width: 100%;
+}
+
+meter {
+    width: 80%;
+    height: 30px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+meter::-webkit-meter-bar {
+    background: #f0f0f0;
+    border-radius: 5px;
+}
+
+meter::-webkit-meter-optimum-value {
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    border-radius: 5px;
+}
+
+meter::-webkit-meter-suboptimum-value {
+    background: linear-gradient(90deg, #FF9800, #FFC107);
+    border-radius: 5px;
+}
+
+meter::-webkit-meter-even-less-good-value {
+    background: linear-gradient(90deg, #f44336, #E91E63);
+    border-radius: 5px;
+}
+
+meter::-moz-meter-bar {
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    border-radius: 5px;
+}
+
+meter::-moz-meter-optimum {
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    border-radius: 5px;
+}
+
+meter::-moz-meter-suboptimum {
+    background: linear-gradient(90deg, #FF9800, #FFC107);
+    border-radius: 5px;
+}
+
+meter::-moz-meter-subsuboptimum {
+    background: linear-gradient(90deg, #f44336, #E91E63);
+    border-radius: 5px;
+}
+
+/* Dodatni stil za drsnike */
+input[type="range"] {
+    width: 100%;
+    margin: 10px 0;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -6px;
+}
+
+input[type="range"]::-moz-range-track {
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type="range"]::-ms-track {
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+}
+
+input[type="range"]::-ms-thumb {
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+}
